@@ -1,0 +1,108 @@
+id: http://w3id.org/ontogpt/soton_ibd_treatment
+name: soton_ibd_treatment
+title: University of Southampton IBD Treatment Report Schema
+description: >-
+  A custom template for extracting and grounding clinical reports focused on IBD pathologies.
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  soton_ibd_treatment: http://w3id.org/ontogpt/soton_ibd_treatment/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  PATO: http://purl.obolibrary.org/obo/PATO_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  SNOMEDCT: http://purl.bioontology.org/ontology/SNOMEDCT/
+  ICD10CM: http://purl.bioontology.org/ontology/ICD10CM/
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  MESH: http://purl.bioontology.org/ontology/MESH/
+  MONDO: http://purl.obolibrary.org/obo/MONDO_
+  linkml: https://w3id.org/linkml/
+  pathology: http://w3id.org/ontogpt/soton_ibd_treatment
+keywords:
+  - pathology
+  - phenotype
+
+default_prefix: soton_ibd_treatment
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+
+classes:
+
+  PathologyReport:
+    tree_root: true
+    description: >-
+      A semicolon-delimited list of statements, each describing a pathology,
+      including any diagnoses, one or more specific qualities being measured
+      and the anatomical location or tissue the pathology is measured in. Each
+      statement should describe a single condition.
+      STRICTLY output only statements in the specified format. Do not include any
+      explanations, reasoning, colons, or additional text.
+    attributes:
+      treatment_statements:
+        description: >-
+          A semicolon-delimited list of treatments the patient has had. 
+          Include any dates or times if mentioned. For example, "patient 
+          has been on infliximab and steroids since 01/05/2017"  should be
+          "infliximab since 01/05/2017" and "steroids since 01/05/2017". 
+          If any of the pathology statements are negative, do not include in the statement. STRICTLY output only statements in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: Treatment
+        multivalued: true
+   
+  Treatment:
+    description: >-
+      A statement that describes a treatment or drug the patient has had.
+    attributes:
+      treatment_name:
+        description: >-
+          Name of the drug or treatment the patient has previously had. This can
+          also be broader classes such as "joint injection" or "dual anticoagulant". Do not include 
+          explanatory phrases. STRICTLY output only treament names in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: TreatmentName
+        annotations:
+          prompt.example: ustekinumab, azathioprine, infliximab
+      treatment_route:
+        description: >-
+          Any additional information relating to the treatment route. Do not include 
+          explanatory phrases. STRICTLY output only treatment routes in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: TreatmentRoute
+        annotations:
+          prompt.example: oral, IV, intramuscular, subcutaneous
+      treatment_dose:
+        description: >-
+          Any additional information relating to the treatment dose. Do not include 
+          explanatory phrases. STRICTLY output only treatment dose in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: string
+        annotations:
+          prompt.example: 10mg/kg, 5mg, 10IU 
+      treatment_interval:
+        description: >-
+          Any additional information relating to the treatment timing. Do not include 
+          explanatory phrases. STRICTLY output only treatment intervals in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: string
+        annotations:
+          prompt.example: since 5/7/1998, BID, twice a day, weekly
+
+  
+  TreatmentName:
+    is_a: NamedEntity
+    id_prefixes:
+      - SNOMEDCT
+      - ICD10CM
+      - NCIT
+      - MESH
+      - MONDO
+    annotations:
+      annotators: bioportal:SNOMEDCT, bioportal:ICD10CM, sqlite:obo:ncit, sqlite:obo:mesh, sqlite:obo:mondo
+
+  TreatmentRoute:
+    is_a: NamedEntity
+    id_prefixes:
+      - SNOMEDCT
+      - ICD10CM
+      - NCIT
+      - MESH
+      - MONDO
+    annotations:
+      annotators: bioportal:SNOMEDCT, bioportal:ICD10CM, sqlite:obo:ncit, sqlite:obo:mesh, sqlite:obo:mondo
+

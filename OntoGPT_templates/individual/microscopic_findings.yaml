@@ -1,0 +1,193 @@
+id: http://w3id.org/ontogpt/soton_ibd_microscopic_findings
+name: soton_ibd_microscopic_findings
+title: University of Southampton IBD Microscopic Findings Report Schema
+description: >-
+  A custom template for extracting and grounding clinical reports focused on IBD pathologies.
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  soton_ibd_microscopic_findings: http://w3id.org/ontogpt/soton_ibd_microscopic_findings/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  PATO: http://purl.obolibrary.org/obo/PATO_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  SNOMEDCT: http://purl.bioontology.org/ontology/SNOMEDCT/
+  ICD10CM: http://purl.bioontology.org/ontology/ICD10CM/
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  MESH: http://purl.bioontology.org/ontology/MESH/
+  MONDO: http://purl.obolibrary.org/obo/MONDO_
+  linkml: https://w3id.org/linkml/
+  pathology: http://w3id.org/ontogpt/soton_ibd_microscopic_findings
+keywords:
+  - pathology
+  - phenotype
+
+default_prefix: soton_ibd_microscopic_findings
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+
+
+classes:
+
+  PathologyReport:
+    tree_root: true
+    description: >-
+      A semicolon-delimited list of statements, each describing a pathology,
+      including any diagnoses, one or more specific qualities being measured
+      and the anatomical location or tissue the pathology is measured in. Each
+      statement should describe a single condition.
+      STRICTLY output only statements in the specified format. Do not include any
+      explanations, reasoning, colons, or additional text.
+    attributes:
+      pathology_statements:
+        description: >-
+          A semicolon-delimited list of pathology statements, capturing each observed 
+          pathology as well as any normal findings or negative statements. Include all 
+          diagnoses, anatomical locations, and specific qualities measured. Where findings 
+          are noted as absent or within normal limits, retain these details as separate 
+          statements. Ensure each pathology statement captures all relevant features, 
+          even if minor or non-specific (e.g., 'no granuloma,' 'normal ileal appearance'). 
+          For example, statements like 'no granulomas or viropathic changes' should be 
+          split to 'no granulomas' and 'no viropathic changes,' each as individual items in the list.
+          STRICTLY output only statements in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: PathologyStatement
+        multivalued: true
+
+  PathologyStatement:
+    description: >-
+      A statement that describes a pathology, including any diagnoses,
+      one or more specific qualities being measured and the anatomical
+      location or tissue the pathology is measured in.
+    attributes:
+      diagnosis:
+        description: >-
+          Extract only the main diagnosis or pathology finding term. This should be a single term, for example, 
+          'colitis,' 'inflammation,' 'dysplasia,' 'polyp,' 'granuloma,' or 'fistula.' If the finding is normal, return 'Normal' only e.g., "the terminal ileum biopsies are within normal limits". 
+          Do not include qualifiers, locations, severity, explanations, or multiple findings; provide just one finding term 
+          without any additional details. For instance, 'active colitis' should be simplified to 'colitis,' and 
+          'no severe granuloma in duodenum' should be returned as 'granuloma.' STRICTLY output only diagnoses in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: Diagnosis
+        annotations:
+          prompt.example: colitis, inflammation, dysplasia, granuloma, eosinophils, ileitis, lymphoid follicles, histiocytes
+      qualifiers:
+        description: >-
+          A semicolon-delimited list of descriptors other than those for
+          severity. For example "active patchy colitis" should be "active, patchy".
+          Do not include negation, anatomical regions, or severity in this field. 
+          If not specified, this value must be "Not Specified". Do not include explanatory phrases. STRICTLY output only qualifiers in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: string
+        annotations:
+          prompt.example: active, chronic, focal, possible, some, very large
+        multivalued: true
+      severity:
+        description: >-
+          The severity of the pathology, for example, mild, moderate, or severe.
+          If not specified, this value must be "N/A". Do not include explanatory phrases 
+          or descriptions. STRICTLY output only severity in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: string
+        annotations:
+          prompt.example: mild, moderate, severe, borderline, very mild, mild-moderate
+      anatomical_entities:
+        description: >-
+          Semicolon-delimited list of anatomical locations or tissues
+          the pathology is measured in. This may need to be inferred from the
+          text, for example, "colitis" means the entity should be "colon".
+          A statement of "gastric antral-type mucosa" should be changed to
+          include only the anatomical entity, in this case "gastric mucosa".
+          If this is not specified or cannot be inferred then this value must
+          be "N/A". Only include anatomical locations or tissues, do not include severity, findings, qualifiers. 
+          Only include anatomical locations or tissues, do not include 
+          severity, findings, qualifiers, or explanatory phrases. STRICTLY output only anatomical entities in the specified format.
+        range: AnatomicalEntity
+        annotations:
+          prompt.example: duodenum, colonic mucosa, liver
+        multivalued: true
+      anatomical_subregions:
+        description: >-
+          Semicolon-delimited list of specific subregions within the main anatomical areas. 
+          Subregions provide additional locational context, such as 'antrum' (in the stomach), 
+          'proximal' or 'distal' (in the colon), or specific measurements (e.g., '25cm' 
+          within the colon). Extract only subregions that provide spatial distinctions within 
+          the broader anatomical entity. If no subregion is specified or cannot be inferred, 
+          use "N/A". STRICTLY only include anatomical locations or tissues, 
+          do not include severity, findings, qualifiers, or explanatory phrases.
+        range: AnatomicalSubregions
+        annotations:
+          prompt.example: antrum, proximal, distal, 25cm, cardia
+        multivalued: true
+      anatomical_structure:
+        description: >-
+          Semicolon-delimited list of specific tissue structures within anatomical regions 
+          where the pathology is observed. Structures are broader tissue categories, 
+          such as 'mucosa' or 'submucosa,' that describe the general tissue type rather 
+          than individual cellular regions. For example, if "gastric mucosa" is specified, 
+          retain "mucosa" as the structure. If no specific structure is present or cannot 
+          be inferred, use "N/A". STRICTLY only include anatomical locations or tissues, 
+          do not include severity, findings, qualifiers, or explanatory phrases.
+        range: AnatomicalStructures
+        annotations:
+          prompt.example: mucosa, submucosa, epithelium, muscularis propria
+        multivalued: true
+      anatomical_cellular_region:
+        description: >-
+          Semicolon-delimited list of specific cellular regions or components observed 
+          within the anatomical structures. Cellular regions are finer divisions, such as 
+          'crypt', 'lamina propria', or 'squamous epithelium', that offer detail at the 
+          cellular or histological level. Extract only cellular components that are explicitly 
+          mentioned in relation to the anatomical structures. If no cellular region is specified 
+          or cannot be inferred, use "N/A". STRICTLY only include anatomical locations or tissues, 
+          do not include severity, findings, qualifiers, or explanatory phrases.
+        range: AnatomicalCellularRegions
+        annotations:
+          prompt.example: crypt, lamina propria, squamous epithelium, cardiac glands
+        multivalued: true
+      negative:
+        description: >-
+          Whether the pathology is negative or not present. This must be
+          explicitly stated in the input, e.g., "no granulomas", in order
+          to be true. It is otherwise false. If a pathology finding is "normal", 
+          this would be false (e.g.normal appearance in the mucosa of the colon).
+        range: string
+        annotations:
+          prompt.example: true, false
+
+
+  Diagnosis:
+    is_a: NamedEntity
+    id_prefixes:
+      - SNOMEDCT
+      - ICD10CM
+      - NCIT
+      - MESH
+      - MONDO
+    annotations:
+      annotators: bioportal:SNOMEDCT, bioportal:ICD10CM, sqlite:obo:ncit, sqlite:obo:mesh, sqlite:obo:mondo
+
+  AnatomicalEntity:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon
+
+  AnatomicalSubregions:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon
+
+  AnatomicalStructures:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon
+
+  AnatomicalCellularRegions:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon

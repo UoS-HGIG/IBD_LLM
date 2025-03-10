@@ -1,0 +1,93 @@
+id: http://w3id.org/ontogpt/soton_ibd_diagnosis
+name: soton_ibd_diagnosis
+title: University of Southampton IBD Diagnosis Report Schema
+description: >-
+  A custom template for extracting and grounding clinical reports focused on IBD pathologies.
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  soton_ibd_diagnosis: http://w3id.org/ontogpt/soton_ibd_diagnosis/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  PATO: http://purl.obolibrary.org/obo/PATO_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  SNOMEDCT: http://purl.bioontology.org/ontology/SNOMEDCT/
+  ICD10CM: http://purl.bioontology.org/ontology/ICD10CM/
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  MESH: http://purl.bioontology.org/ontology/MESH/
+  MONDO: http://purl.obolibrary.org/obo/MONDO_
+  linkml: https://w3id.org/linkml/
+  pathology: http://w3id.org/ontogpt/soton_ibd_diagnosis
+keywords:
+  - pathology
+  - phenotype
+
+default_prefix: soton_ibd_diagnosis
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+
+
+classes:
+
+  PathologyReport:
+    tree_root: true
+    description: >-
+      A semicolon-delimited list of statements, each describing a pathology,
+      including any diagnoses, one or more specific qualities being measured
+      and the anatomical location or tissue the pathology is measured in. Each
+      statement should describe a single condition.
+      STRICTLY output only statements in the specified format. Do not include any
+      explanations, reasoning, colons, or additional text.
+    attributes:
+      patient_diagnosis_statements:
+        description: >-
+          A semicolon-delimited list of summary diagnoses made for the patient.
+          Only include when found in sections relating to "Diagnosis", "Impressions", "Summary", or simillar.
+          Also include any notes or comment. For example, "Mild active 
+          colitis in keeping with Crohn's disease" would be "Crohn's disease with mild active colitis". STRICTLY output only statements in the specified format. Do not include any explanations, reasoning, colons, or additional text.  
+        range: PatientDiagnosis
+        multivalued: true      
+
+  PatientDiagnosis:
+    description: >-
+      A statement that describes the summary diagnosis from the report.
+    attributes:
+      patient_diagnosis_name:
+        description: >-
+          The diagnosis or pathology being described, e.g. "Colitis", "Oesophagitis", "normal mucosa". Do not include 
+          explanatory phrases. STRICTLY output only diagnoses in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: PatientDiagnosisName
+        annotations:
+          prompt.example: gastritis, ulcerative colitis, inflammatory bowel disease
+      patient_diagnosis_severity:
+        description: >-
+          Any additional information relating to the severity or qualifier of the primary diagnosis. Do not include 
+          explanatory phrases. STRICTLY output only severity in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: string
+        annotations:
+          prompt.example: severe, mild, chronic
+      patient_diagnosis_location:
+        description: >-
+          Any additional information relating to the location of the primary diagnosis. Do not include 
+          explanatory phrases. STRICTLY output only anatomical locations in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: PatientDiagnosisLocation
+        annotations:
+          prompt.example: terminal ileum, small bowel, duodenum
+
+  PatientDiagnosisName:
+    is_a: NamedEntity
+    id_prefixes:
+      - SNOMEDCT
+      - ICD10CM
+      - NCIT
+      - MESH
+      - MONDO
+    annotations:
+      annotators: bioportal:SNOMEDCT, bioportal:ICD10CM, sqlite:obo:ncit, sqlite:obo:mesh, sqlite:obo:mondo
+  PatientDiagnosisLocation:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon

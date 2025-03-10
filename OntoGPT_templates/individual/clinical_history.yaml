@@ -1,0 +1,98 @@
+id: http://w3id.org/ontogpt/soton_ibd_clinical_history
+name: soton_ibd_clinical_history
+title: University of Southampton IBD Clinical History Report Schema
+description: >-
+  A custom template for extracting and grounding clinical reports focused on IBD pathologies.
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  soton_ibd_clinical_history: http://w3id.org/ontogpt/soton_ibd_clinical_history/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  PATO: http://purl.obolibrary.org/obo/PATO_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  SNOMEDCT: http://purl.bioontology.org/ontology/SNOMEDCT/
+  ICD10CM: http://purl.bioontology.org/ontology/ICD10CM/
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  MESH: http://purl.bioontology.org/ontology/MESH/
+  MONDO: http://purl.obolibrary.org/obo/MONDO_
+  linkml: https://w3id.org/linkml/
+  pathology: http://w3id.org/ontogpt/soton_ibd_clinical_history
+keywords:
+  - pathology
+  - phenotype
+
+default_prefix: soton_ibd_clinical_history
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+
+
+classes:
+
+  PathologyReport:
+    tree_root: true
+    description: >-
+      A semicolon-delimited list of statements, each describing a pathology,
+      including any diagnoses, one or more specific qualities being measured
+      and the anatomical location or tissue the pathology is measured in. Each
+      statement should describe a single condition.
+      STRICTLY output only statements in the specified format. Do not include any
+      explanations, reasoning, colons, or additional text.
+    attributes:
+      clinical_history_statements:
+        description: >-
+          A semicolon-delimited list of clinical history statements, each 
+          describing a finding in a patient's history, including any diagnoses.
+          Only include in sections explicitely mentioning a "Clinical History" or patient history. 
+          If any of the history mentions are negative, the negation should be included in each statment, e.g., 
+          "no history of Crohn's or UC" should become "no history of 
+          Crohn's Disease" and "no history of Ulcerative Colitis". STRICTLY output only statements in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: PatientClinicalHistory
+        multivalued: true
+
+  PatientClinicalHistory:
+    description: >-
+      A statement that describes a clinical history, including any diagnoses.
+    attributes:
+      clinical_history:
+        description: >-
+          The diagnosis or pathology being described in the history. This may include
+          full diagnoses or observations, for example, "Crohn's disease",
+          "Ileitis", "IBD", "Colitis", "Pancolitis", "Abdominal pain". Do not include qualifiers in this field,
+          e.g., "active colitis" should be "colitis".
+          Do not include multiple findings at once, and explanatory phrases. STRICTLY output only clinical history in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: ClinicalHistoryEntity
+        annotations:
+          prompt.example: ulcerative colitis, crohn's disease, gastritis
+      clinical_history_severity:
+        description: >-
+          Any additional information relating to the severity or qualifier of the primary diagnosis. Do not include 
+          explanatory phrases. STRICTLY output only severity in the specified format. Do not include any explanations, reasoning, colons, or additional text..
+        range: string
+        annotations:
+          prompt.example: severe, mild, chronic
+      clinical_history_location:
+        description: >-
+          Any additional information relating to the location of the primary diagnosis. Do not include 
+          explanatory phrases. STRICTLY output only anatomical locations in the specified format. Do not include any explanations, reasoning, colons, or additional text.
+        range: ClinicalHistoryLocation
+        annotations:
+          prompt.example: duodenum, ileum, colon, large bowel
+
+  ClinicalHistoryEntity:
+    is_a: NamedEntity
+    id_prefixes:
+      - SNOMEDCT
+      - ICD10CM
+      - NCIT
+      - MESH
+      - MONDO
+    annotations:
+      annotators: bioportal:SNOMEDCT, bioportal:ICD10CM, sqlite:obo:ncit, sqlite:obo:mesh, sqlite:obo:mondo
+  ClinicalHistoryLocation:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon
