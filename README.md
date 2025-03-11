@@ -3,6 +3,9 @@
 ## Overview
 The University of Southampton HGIG IBD-LLM toolkit is a specialised large language model fine-tuned for structuring inflammatory bowel disease (IBD) patient records. This model integrates genomic data, structured findings, and clinical information to improve precision in IBD research and patient stratification.
 
+
+![IBD-LLM Abstract](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/abstract.png))
+
 ### Reference
 **Application of Generative Artificial Intelligence to Utilise Unstructured Clinical Data for Acceleration of Inflammatory Bowel Disease Research**  
 Alex Z Kadhim, Zachary Green, Iman Nazari, Jonathan Baker, Michael George, Ashley Heinson, Matt Stammers, Christopher Kipps, R Mark Beattie, James J Ashton, Sarah Ennis  
@@ -28,6 +31,8 @@ We provide:
 
 ## Additional Tool: HPO Mapper
 The IBD-LLM toolkit includes an **HPO Mapper**, a supplementary tool designed to map patient findings to Human Phenotype Ontology (HPO) terms using semantic similarity. This enhances structured data integration by linking findings to relevant genomic data.
+
+![HPO Mapping](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/hpo.png)
 
 ### HPO Mapper Workflow
 1. **Extract Findings**: Load patient findings from JSON files.
