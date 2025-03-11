@@ -1,5 +1,7 @@
 # Inflammatory Bowel Disease (IBD) Large Language Model (LLM) Patient Structuring Toolkit
 
+![Llamas](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/llamas.png)
+
 ## Overview
 The University of Southampton Human Genetics and Informatics Group IBD-LLM toolkit is a specialised large language model-based kit fine-tuned for structuring inflammatory bowel disease (IBD) patient records. This model convert unstructured free text into structured and standardised formats, allowing the integration of genomic data, structured findings, and clinical information to improve precision in IBD research and patient stratification.
 
@@ -19,6 +21,7 @@ We provide:
 - MIMIC-IBD patient imaging record [trained weights for Llama 3.1 8B](https://huggingface.co/UoS-HGIG/MIMIC)
 
 ![Example Input/Output](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/example.png)
+
 
 ## Additional Tool: HPO Mapper
 The IBD-LLM toolkit includes an **HPO Mapper**, a supplementary tool designed to map patient findings to Human Phenotype Ontology (HPO) terms using semantic similarity. This enhances structured data integration by linking findings to relevant genomic data.
