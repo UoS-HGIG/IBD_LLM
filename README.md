@@ -2,8 +2,8 @@
 
 IBD-LLM is a specialised large language model fine-tuned for structuring inflammatory bowel disease (IBD) patient records. This model integrates genomic data, structured findings, and clinical information to improve precision in IBD research and patient stratification.  
 
-🔗 **Pretrained on MIMIC-IV:** The model builds on our fine-tuned **MIMIC-LLM**, trained on clinical records from the MIMIC-IV dataset.  
-📌 **MIMIC-LLM Weights:** [UoS-HGIG/MIMIC](https://huggingface.co/UoS-HGIG/MIMIC)  
+**Pretrained on MIMIC-IV:** The model builds on our fine-tuned **MIMIC-LLM**, trained on clinical records from the MIMIC-IV dataset.  
+**MIMIC-LLM Weights:** [UoS-HGIG/MIMIC](https://huggingface.co/UoS-HGIG/MIMIC)  
 
 ## Features  
 - Standardising free-text medical records  
