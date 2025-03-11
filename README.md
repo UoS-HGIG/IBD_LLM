@@ -50,7 +50,7 @@ Run the script to process all JSON files in the `patient_json_dir`:
 python script.py
 ```
 
-## Customization
+## Customisation
 - **Adjust Similarity Threshold**: Modify the threshold in `find_best_hpo_match()` for more/less strict matching.
 - **Database Updates**: Ensure `hpo_genes.db` contains updated HPO embeddings and gene mappings.
 
