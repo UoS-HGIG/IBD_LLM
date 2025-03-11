@@ -15,8 +15,8 @@ Our framework utilises the **OntoGPT** package for ontology-based structuring of
 
 We provide:
 - IBD-specific templates (combined and for individual entities) with prompt engineering: `IBD_LLM/OntoGPT_templates/`
-- Compatibility with any OntoGPT-compliant LLM, including those using **Ollama** or the **OpenAI API**
-- MIMIC-IBD patient imaging record trained weights for **Llama 3.1 8B** [Huggingface link](https://huggingface.co/UoS-HGIG/MIMIC)
+- Compatibility with any OntoGPT-compliant LLM, including those using [Ollama](https://ollama.com/) or the OpenAI API
+- MIMIC-IBD patient imaging record [trained weights for Llama 3.1 8B](https://huggingface.co/UoS-HGIG/MIMIC)
 
 ![Example Input/Output](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/example.png)
 
@@ -28,7 +28,7 @@ The IBD-LLM toolkit includes an **HPO Mapper**, a supplementary tool designed to
 ### HPO Mapper Workflow
 1. **Extract Findings**: Load patient findings from JSON files.
 2. **Find Best HPO Match**: Compute semantic similarity using `nomic-embed-text`.
-3. **Retrieve Associated Genes**: Query the SQLite database (https://huggingface.co/datasets/UoS-HGIG/hpo_genes) for genes linked to the HPO term.
+3. **Retrieve Associated Genes**: Query our [HPO SQLite database](https://huggingface.co/datasets/UoS-HGIG/hpo_genes) for genes linked to the HPO term.
 4. **Store Results**: Save the mapped findings in a CSV file.
 5. **Logging**: Logs are stored in `pipeline.log`.
 
@@ -43,6 +43,7 @@ Additionally, you must pull the `nomic-embed-text` model before running the scri
 ```bash
 ollama pull nomic-embed-text
 ```
+and have obtained the [HPO embeddings](https://huggingface.co/datasets/UoS-HGIG/hpo_genes)
 
 ### Input Format
 Each patient's findings should be as on JSON file:
@@ -58,12 +59,6 @@ Each patient's findings should be as on JSON file:
 }
 ````
 https://github.com/UoS-HGIG/IBD_LLM/blob/main/src/HPO_mapper/hpo_input_template.json
-
-### Execution
-Run the script to process all JSON files in the `patient_json_dir`:
-```bash
-python script.py
-```
 
 ## Customisation
 - **Adjust Similarity Threshold**: Modify the threshold in `find_best_hpo_match()` for more/less strict matching.
