@@ -18,10 +18,7 @@ We provide:
 - Compatibility with any OntoGPT-compliant LLM, including those using **Ollama** or the **OpenAI API**
 - MIMIC-IBD patient imaging record trained weights for **Llama 3.1 8B** [Huggingface link](https://huggingface.co/UoS-HGIG/MIMIC)
 
-### Features
-- **Standardising free-text medical records**
-- **Extracting structured clinical data for IBD**
-- **Supporting AI-driven patient stratification**
+![Example Input/Output](https://github.com/UoS-HGIG/IBD_LLM/blob/main/img/example.png)
 
 ## Additional Tool: HPO Mapper
 The IBD-LLM toolkit includes an **HPO Mapper**, a supplementary tool designed to map patient findings to Human Phenotype Ontology (HPO) terms using semantic similarity. This enhances structured data integration by linking findings to relevant genomic data.
