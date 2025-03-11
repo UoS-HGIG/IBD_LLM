@@ -44,6 +44,21 @@ Additionally, you must pull the `nomic-embed-text` model before running the scri
 ollama pull nomic-embed-text
 ```
 
+### Input Format
+Each patient's findings should be as on JSON file:
+````
+{
+    "subject_id": "",
+    "data": [
+        {
+            "finding": "",
+            "anatomical_region": ""
+        }
+    ]
+}
+````
+https://github.com/UoS-HGIG/IBD_LLM/blob/main/src/HPO_mapper/hpo_input_template.json
+
 ### Execution
 Run the script to process all JSON files in the `patient_json_dir`:
 ```bash
@@ -53,10 +68,6 @@ python script.py
 ## Customisation
 - **Adjust Similarity Threshold**: Modify the threshold in `find_best_hpo_match()` for more/less strict matching.
 - **Database Updates**: Ensure `hpo_genes.db` contains updated HPO embeddings and gene mappings.
-
-## Troubleshooting
-- **No HPO Match Found**: Check embedding consistency or lower similarity threshold.
-- **Database Errors**: Ensure `hpo_genes.db` is accessible and correctly formatted.
 
 ## License
 This project is licensed under the MIT License.
