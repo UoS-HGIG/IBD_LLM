@@ -11,9 +11,8 @@ The University of Southampton Human Genetics and Informatics Group IBD-LLM toolk
 </p>
 
 ### Reference
-**Application of Generative Artificial Intelligence to Utilise Unstructured Clinical Data for Acceleration of Inflammatory Bowel Disease Research**  
-Alex Z Kadhim, Zachary Green, Iman Nazari, Jonathan Baker, Michael George, Ashley Heinson, Matt Stammers, Christopher Kipps, R Mark Beattie, James J Ashton, Sarah Ennis  
-medRxiv 2025.03.07.25323569; doi: [https://doi.org/10.1101/2025.03.07.25323569](https://doi.org/10.1101/2025.03.07.25323569)
+**Application of generative artificial intelligence to utilize unstructured clinical data for acceleration of inflammatory bowel disease research**  
+Alex Z. Kadhim, Zachary Green, Iman Nazari, Jonathan Baker, Michael George, Ashley Heinson, Bhumita Vadgama, Matt Stammers, Christopher M. Kipps, R. Mark Beattie, James J. Ashton, Sarah Ennis  *Med* **7**(1), 100895 (9 January 2026)  doi: [https://doi.org/10.1016/j.medj.2025.100895](https://doi.org/10.1016/j.medj.2025.100895)
 
 ## OntoGPT Integration
 Our framework utilises the **OntoGPT** package for ontology-based structuring of clinical data. See [OntoGPT's official site](https://monarch-initiative.github.io/ontogpt/) for installation instructions.
